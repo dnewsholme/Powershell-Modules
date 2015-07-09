@@ -39,7 +39,7 @@ Function Start-AutoUpdate([String]$updateserver_UNC_Path, [String]$scriptname) {
         #Set Update Script path as something powershell will execute if spaces are in the name
         $updatescript = "&('$currentdir\updater.ps1')"
         #Get a copy of the latest script and download it, ready to apply after this script exits.
-        Copy-Item "$updateserver_UNC_Path\usercreation.ps1" "$currentdir\$scriptname.update" -confirm:$false
+        Copy-Item "$updateserver_UNC_Path\$scriptname" "$currentdir\$scriptname.update" -confirm:$false
         #Generate the script which will overwrite this one with the latest
         echo "move-item '$currentdir\$scriptname.update' '$currentdir\$scriptname' -Force" | out-file "$currentdir\updater.ps1"
         New-MSGBox "An Update to this script will now be applied. This Script will now Exit Please Re-Run."
