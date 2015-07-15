@@ -50,7 +50,7 @@ function New-EncryptedZip ([string]$filestozip, [string]$outputfilename, [string
     } 
     if(test-path $outputfilename) {remove-item $outputfilename} #Delete file if it already exists
     $args = "a -t$CompressionType $outputfilename $filestozip -p $password" #Set 7 zip command line arguements 
-    $process = start-process $7zipbinary -ArguementList $args -wait -passthru -windowstyle "Hidden"
+    $process = start-process $7zipbinary -ArgumentList $args -wait -passthru -windowstyle "Hidden"
     if (!(($process.HasExited -eq $true) -and($process.ExitCode -eq 0)))
     {
         $error | out-file "$basedir\error.log" -append
