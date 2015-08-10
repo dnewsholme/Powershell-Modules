@@ -145,12 +145,13 @@ function Remove-OldFiles {
 
         '
         #REGION END
+        $server = $env:computername
         $files = get-childitem -recurse $path | where {$_.LastWriteTime -lt ((get-date).adddays(-$MaxAge))}
         if ($files -ne $null){ 
-            $files | % {remove-item $_.FullName} -Confirm:$false
+            $files | where {$_.PSIsContainer -ne $true} | % {remove-item $_.FullName -Confirm:$false} 
         
-        $html =  convertto-html -head "<style>$css</style>" -Title "Deleted Files for $path" -body "<h1>Deleted Files for $path</h1>"
-        $html +=  $files | select FullName,LastWriteTime | convertto-html}
+        $html =  convertto-html -head "<style>$css</style>" -Title "Deleted Files for $path" -body "<h1>Deleted Files for $path on $server</h1>"
+        $html +=  $files | where {$_.PSIsContainer -ne $true} | select FullName,LastWriteTime | convertto-html
         ELSE {$html = convertto-html -Body "No Files older than $maxage days"}        
         $html | out-file $env:TEMP\1.html
         [string]$html = Get-Content $env:TEMP\1.html
@@ -221,3 +222,5 @@ function Send-Mail {
             send-mailmessage -From $senderaddress -To $recipientaddress -SmtpServer $MailServer -Subject $subject -body $body -port $port -Credential $creds
             }
 }
+
+
