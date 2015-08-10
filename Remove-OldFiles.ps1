@@ -43,7 +43,6 @@ function Remove-OldFiles {
         $senderaddress,
         $mailcredential
         )
-        #REGION BEGIN
         $css = 'h1 {
             margin-left: auto;
             margin-right: auto;
@@ -96,7 +95,6 @@ function Remove-OldFiles {
         }
 
         '
-        #REGION END
         $server = $env:computername
         $files = get-childitem -recurse $path | where {$_.LastWriteTime -lt ((get-date).adddays(-$MaxAge))}
         if ($files -ne $null){ 
