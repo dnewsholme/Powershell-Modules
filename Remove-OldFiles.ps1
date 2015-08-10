@@ -53,54 +53,6 @@ function Remove-OldFiles {
             font-weight: bold;
         }
 
-        h2 {
-            margin-left: auto;
-            margin-right: auto;
-            text-transform: capitalize;
-            text-align: center;
-            font-family: "Segoe UI";
-            font-size: 18pt;
-            font-weight: bold;
-        }
-
-        description {
-            text-transform: uppercase;
-            margin-left: auto;
-            margin-right: auto;
-            text-align: center;
-            font-family: "tahoma";
-            font-weight: normal;
-            font-size: 24pt;
-            color:#2f2f2f;
-        }
-
-        servertype {
-            text-transform: uppercase;
-            margin-left: auto;
-            margin-right: auto;
-            text-align: center;
-            font-family: "tahoma";
-            font-weight: normal;
-            font-size: 24pt;
-            color:#2f2f2f;
-        }
-
-
-        update {
-            margin-left: auto;
-            margin-right: auto;
-            text-align: center;
-            font-family: "tahoma";
-            font-weight: lighter;
-            font-size: 10pt;
-            color:#2f2f2f;
-        }
-
-        img {
-            float: left;
-            margin-left: 5em;
-        }
-
         body {
             margin-left: auto;
             margin-right: auto;
