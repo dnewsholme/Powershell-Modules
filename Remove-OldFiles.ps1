@@ -162,42 +162,6 @@ function Remove-OldFiles {
         Send-Mail -senderaddress $senderaddress -recipientaddress $recipientaddress -mailserver $MailServer -Subject "File Deletions for $path" -bodyashtml $html -port 25 -mailcredential $creds
 }
 
-<#
-
-.SYNOPSIS
-Sends a email with support for anonymous authentication
-
-.DESCRIPTION
-Sends a email with support for anonymous authentication
-
-.PARAMETER MailServer
-The SMTP Server
-
-.PARAMETER SenderAddress
-Address to send from
-
-.PARAMETER RecipientAddress
-Address to send to
-
-.PARAMETER Subject
-Subject for the email
-
-.PARAMETER Body
-Body as plaintext
-
-.PARAMETER Bodyashtml
-Body in html format
-
-.PARAMETER MailCredential
-Mailserver credentials, if not specified use anonymous authentication
-
-.EXAMPLE
-
-
-.NOTES
-Daryl Bizsley 2015
-
-#>
 function Send-Mail {
     [CmdletBinding()]
     param(
