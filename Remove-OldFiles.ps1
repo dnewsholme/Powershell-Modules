@@ -151,7 +151,7 @@ function Remove-OldFiles {
             $files | where {$_.PSIsContainer -ne $true} | % {remove-item $_.FullName -Confirm:$false} 
         
         $html =  convertto-html -head "<style>$css</style>" -Title "Deleted Files for $path" -body "<h1>Deleted Files for $path on $server</h1>"
-        $html +=  $files | where {$_.PSIsContainer -ne $true} | select FullName,LastWriteTime | convertto-html
+        $html +=  $files | where {$_.PSIsContainer -ne $true} | select FullName,LastWriteTime | convertto-html}
         ELSE {$html = convertto-html -Body "No Files older than $maxage days"}        
         $html | out-file $env:TEMP\1.html
         [string]$html = Get-Content $env:TEMP\1.html
@@ -159,7 +159,7 @@ function Remove-OldFiles {
 
         $pass = ConvertTo-SecureString "whatever" -asplaintext -force
         $creds = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList "NT AUTHORITY\ANONYMOUS LOGON", $pass
-        Send-Mail -From $senderaddress -To $recipientaddress -SmtpServer $MailServer -Subject "File Deletions for $path" -bodyashtml $html -port 25 -Credential $creds
+        Send-Mail -senderaddress $senderaddress -recipientaddress $recipientaddress -mailserver $MailServer -Subject "File Deletions for $path" -bodyashtml $html -port 25 -mailcredential $creds
 }
 
 <#
@@ -201,7 +201,7 @@ Daryl Bizsley 2015
 function Send-Mail {
     [CmdletBinding()]
     param(
-    [Parameter(ValueFromPipeline=$True)]$body,
+    $body,
     [Parameter(ValueFromPipeline=$True)]$bodyashtml,
     $mailserver,
     $recipientaddress,
@@ -222,5 +222,3 @@ function Send-Mail {
             send-mailmessage -From $senderaddress -To $recipientaddress -SmtpServer $MailServer -Subject $subject -body $body -port $port -Credential $creds
             }
 }
-
-
