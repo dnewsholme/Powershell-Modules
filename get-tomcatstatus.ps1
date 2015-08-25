@@ -10,7 +10,7 @@ function Get-TomcatStatus{
     $cred = New-object -TypeName System.Management.Automation.PSCredential -argumentlist ($tomcatuser,$tomcatpassword)
 
     #Invoke the restinterface 
-    $TomcatStats = Invoke-RestMethod -Uri http://$tomcatserver:$tomcatport/manager/status?XML=true -Credential $cred
+    $TomcatStats = Invoke-RestMethod -Uri http://$tomcatserver`:$tomcatport/manager/status?XML=true -Credential $cred
     
     $threads = $TomcatStats.GetElementsByTagName("threadInfo") | ? {$_.currentThreadCount -ne 0}
     
