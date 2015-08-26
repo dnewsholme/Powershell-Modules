@@ -52,10 +52,14 @@ function Write-Influxdb {
     #Form the url to call
     $influxdburl = 'http://{0}:{1}/db/{2}/series?u={3}&p={4}' -f $influxserver,$port,$db,$user,$Password
     #Writes data points to influxdb
-    $json = ('[("name":"{0}.{1}","columns":["value"],"points":[[{2}]])]' -f $hostname,$metric,$datavalue) -replace '\(','{' -replace '\)','}'
+    $json = ('[("name":"{0}.{1}","columns":["value"],"points":[[{2}]])]' -f $hostname,$metricname,$datapoint) -replace '\(','{' -replace '\)','}'
     try {
         Invoke-RestMethod -Uri $influxdburl -ContentType "application/json" -Method Post -Body $json -erroraction stop
     }
-    Catch {"Writing to influxdb server failed."}
-    return "OK"
+    Catch {
+        
+        return $error[0].Exception
+    }
+    
+    return "Datapoint Posted Sucessfully"
 }
