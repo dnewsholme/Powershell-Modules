@@ -155,7 +155,7 @@ function Request-Metascan {
     while (($result.scan_results).progress_percentage -ne 100){
         $result =     $result = Invoke-RestMethod -Uri ('http://{0}:8008/metascan_rest/file/{1}' -f $MetaScanServer,$request.data_id)
     }
-    if (($result.scan_results).scan_all_result_a -ne "Clean"){
+    if (($result.scan_results).scan_all_result_a -eq "Clean"){
       Write-Output "File Clean"
     }
 
