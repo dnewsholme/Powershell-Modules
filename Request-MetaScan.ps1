@@ -148,8 +148,12 @@ function Request-Metascan {
     "Method" = "Post"
     "uri" = ('http://{0}:8008/metascan_rest/file' -f $MetaScanServer)
     }
+    #Encode file for upload
+    $fileBin = [IO.File]::ReadAllBytes($file)
+    $enc = [System.Text.Encoding]::GetEncoding("iso-8859-1")
+    $fileEnc = $enc.GetString($fileBin)
     #Send file to be scanned.
-    $request = Invoke-RestMethod @parms -Headers @{"filename" = ($filename)} -body $file
+    $request = Invoke-RestMethod @parms -Headers @{"filename" = ($filename)} -Body $fileEnc
     #Retrieve Result
     $result = Invoke-RestMethod -Uri ('http://{0}:8008/metascan_rest/file/{1}' -f $MetaScanServer,$request.data_id)
     while (($result.scan_results).progress_percentage -ne 100){
