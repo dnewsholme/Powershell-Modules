@@ -159,8 +159,13 @@ function Request-Metascan {
     while (($result.scan_results).progress_percentage -ne 100){
         $result =     $result = Invoke-RestMethod -Uri ('http://{0}:8008/metascan_rest/file/{1}' -f $MetaScanServer,$request.data_id)
     }
+    $scanresults = New-Object PSObject
+    $scanresults | add-member -MemberType NoteProperty -Name FileName -Value ($result.file_info).display_name
+    $scanresults | add-member -MemberType NoteProperty -Name FileSize -Value ($result.file_info).file_size
+    $scanresults | add-member -MemberType NoteProperty -Name FileInfo -Value ($result.file_info).file_type_description
+    $scanresults | add-member -MemberType NoteProperty -Name ScanResult -Value ($result.scan_results).scan_all_result_a
+    $scanresults | add-member -MemberType NoteProperty -Name FileSource -Value ($result.source)
     if (($result.scan_results).scan_all_result_a -eq "Clean"){
-      Write-Output "File Clean"
     }
 
     Else {
@@ -168,14 +173,6 @@ function Request-Metascan {
       Remove-Item -Path (get-item $file) -Force
       #Create Object for email output
       if($email){
-            $scanresults = New-Object PSObject
-            $scanresults | add-member -MemberType NoteProperty -Name FileName -Value ($result.file_info).display_name
-            $scanresults | add-member -MemberType NoteProperty -Name FileSize -Value ($result.file_info).file_size
-            $scanresults | add-member -MemberType NoteProperty -Name FileInfo -Value ($result.file_info).file_type_description
-            $scanresults | add-member -MemberType NoteProperty -Name ScanResult -Value ($result.scan_results).scan_all_result_a
-            $scanresults | add-member -MemberType NoteProperty -Name FileSource -Value ($result.source)
-    
-    
             #Send Email Alert
             $html =  convertto-html -head "<style>$css</style>" -Title "Infected Files Found" -body ("<p>Review files at http://{0}:8008/management/quarantine</p>" -f $MetaScanServer) 
             $html += $scanresults | ConvertTo-Html
@@ -186,5 +183,5 @@ function Request-Metascan {
             Send-MailMessage -from $senderaddress -to $recipientaddress -SmtpServer $MailServer -Subject "Infected File Detected" -bodyashtml $html -port 25 -credential $creds
         }
     }
-
+$scanresults
 }
