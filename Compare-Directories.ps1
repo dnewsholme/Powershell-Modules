@@ -1,4 +1,3 @@
-```PowerShell
 <#
 
 .SYNOPSIS
@@ -39,4 +38,3 @@ function Compare-Directories{
         $results = Compare-Object $sourcehashes $comparisonhashes
         $results.InputObject
 }
-```
