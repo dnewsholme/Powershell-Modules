@@ -7,7 +7,7 @@ Creates a networkshare and set the permissions
 Creates a networkshare and set the permissions
 
 .EXAMPLE
-New-NetworkShare -path "C:\test" -sharename "test" -AccessGroup "Lowell2\Domain Admins" -permissions "FullControl"
+New-NetworkShare -path "C:\test" -sharename "test" -AccessGroup "contoso\Domain Admins" -permissions "FullControl"
 
 .NOTES
 Daryl Bizsley 2016
