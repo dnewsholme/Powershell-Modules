@@ -55,14 +55,21 @@ Function Write-Influxdb {
         $tags,
         $hostname = $env:computername,
         $metricname,
-        $datapoint
+        $datapoint,
+        [switch]$https
     )
     $error.Clear()
     $passwordAsSecureString = ConvertTo-SecureString "$password" -AsPlainText -Force
     $cred = new-object System.Management.Automation.PSCredential ("$user", $passwordAsSecureString)
+    if ($https) {
+        $https = "https"
+        }
+    Else {
+        $https= "http"
+        }
     if ($tags){
         try{
-            $request = Invoke-WebRequest ('http://{0}:{1}/write?db={2}' -f $influxserver,$port,$db ) -Method post -body ('{0},host={1},{2} value={3}' -f $metricname,$hostname,$tags,$datapoint) -Credential $cred
+            $request = Invoke-WebRequest -usebasicparsing ('{0}://{1}:{2}/write?db={3}' -f $https,$influxserver,$port,$db ) -Method post -body ('{0},host={1},{2} value={3}' -f $metricname,$hostname,$tags,$datapoint) -Credential $cred
             }
 
         catch{
@@ -71,7 +78,7 @@ Function Write-Influxdb {
     }
     ELSE{
         try{
-            $request = Invoke-WebRequest ('http://{0}:{1}/write?db={2}' -f $influxserver,$port,$db ) -Method post -body ('{0},host={1} value={2}' -f $metricname,$hostname,$datapoint) -Credential $cred
+            $request = Invoke-WebRequest -usebasicparsing ('{0}://{1}:{2}/write?db={3}' -f $https,$influxserver,$port,$db ) -Method post -body ('{0},host={1} value={2}' -f $metricname,$hostname,$datapoint) -Credential $cred
             }
 
         catch{
