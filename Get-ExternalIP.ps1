@@ -16,5 +16,5 @@ Daryl Bizsley 2015
 #>
 
 function Get-ExternalIP {
-(Invoke-WebRequest ifconfig.me/ip).Content
+  (Invoke-WebRequest -usebasicparsing domains.google.com/checkip).Content
 }
